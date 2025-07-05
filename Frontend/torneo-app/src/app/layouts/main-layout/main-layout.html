@@ -1,1 +1,31 @@
-<p>main-layout works!</p>
+<div class="flex flex-col min-h-screen bg-gray-100 font-sans text-gray-800">
+  <!-- MI CABECERA -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+      <!-- Logo o Nombre de la App -->
+      <a routerLink="/" class="text-2xl font-bold text-indigo-600 hover:text-indigo-700 transition-colors">
+        TorneoPro
+      </a>
+      <!-- Enlaces -->
+      <div class="flex items-center space-x-4">
+        <a routerLink="/" class="text-gray-600 hover:text-indigo-600">Inicio</a>
+        <a routerLink="/fixture" class="text-gray-600 hover:text-indigo-600">Fixture</a>
+        <!-- Espacio para botones -->
+        <div class="pl-4 border-l border-gray-200 space-x-2">
+            <a routerLink="/login" class="px-4 py-2 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors">Iniciar Sesión</a>
+            <a routerLink="/registro" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors">Registrarse</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main class="flex-grow container mx-auto p-6">
+    <router-outlet></router-outlet> <!-- Aquí se cargarán las páginas (home, login, etc.) -->
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="bg-gray-800 text-white text-center p-4 mt-auto">
+    <p class="text-sm">© 2025 FixtureUNSA. Todos los derechos reservados.</p>
+  </footer>
+</div>
