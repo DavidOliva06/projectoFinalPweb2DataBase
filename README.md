@@ -11,6 +11,7 @@ Este proyecto consiste en el desarrollo de un sistema de inscripciones para un t
 - Python 3.x
 - Django 4.x
 - PostgreSQL
+- Supabase
 - HTML5
 (Luego veremos el front-end)
 ##  Instalación y ejecución
