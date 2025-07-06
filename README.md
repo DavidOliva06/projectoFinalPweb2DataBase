@@ -6,7 +6,7 @@ Este proyecto consiste en el desarrollo de un sistema de inscripciones para un t
 - **Chipana Mamani Andhy Brayan**
 - **Subia Huaicane Edson Fabricio**
 ##  Arquitectura MTV (Model - Template - View)
-![Diagrama MTV](backup/modelos.png)
+![Diagrama MTV](Backend/modelos.png)
 ##  Tecnologías utilizadas
 - Python 3.x
 - Django 4.x
