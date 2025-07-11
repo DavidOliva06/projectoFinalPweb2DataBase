@@ -11,47 +11,47 @@ import { Auth } from '../../services/auth';
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
-export class Register {
+export class Register { 
+
   userData = {
     name: '',
     email: '',
     password: ''
-  }
-}
-  
-isLoading = false;
-successMessage: string | null = null;
-errorMessage: string | null = null;
+  };
 
-constructor(
-  private auth: Auth,
-  private router: Router
-) {}
+  isLoading = false;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
 
-onSubmit(): void {
-  this.isLoading = true;
-  this.errorMessage = null;
-  this.successMessage = null;
+  constructor(
+    private auth: Auth,
+    private router: Router
+  ) {}
 
-  this.auth.register(this.userData).subscribe({
-    next: () => {
-      // Éxito: muestra un mensaje y redirige al login después de un momento
-      this.isLoading = false;
-      this.successMessage = '¡Registro exitoso! Serás redirigido al login...';
-      setTimeout(() => {
-        this.router.navigate(['/login']);
-      }, 3000); // Espera 3 segundos antes de redirigir
-    },
-    error: (err) => {
-      // Error: muestra un mensaje al usuario
-      this.isLoading = false;
-      // Lógica simple para mostrar errores (se podría mejorar)
-      if (err.error && err.error.email) {
-        this.errorMessage = `Error con el correo: ${err.error.email[0]}`;
-      } else {
-        this.errorMessage = 'Ocurrió un error en el registro. Por favor, inténtalo de nuevo.';
+  onSubmit(): void {
+    this.isLoading = true;
+    this.errorMessage = null;
+    this.successMessage = null;
+
+    this.auth.register(this.userData).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.successMessage = '¡Registro exitoso! Serás redirigido al login...';
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 3000);
+      },
+      error: (err: any) => {
+        this.isLoading = false;
+        if (err.error && err.error.email && Array.isArray(err.error.email)) {
+          this.errorMessage = `Error: ${err.error.email[0]}`;
+        } else if (err.error && typeof err.error === 'string') {
+          this.errorMessage = err.error;
+        } else {
+          this.errorMessage = 'Ocurrió un error en el registro. Por favor, inténtalo de nuevo.';
+        }
+        console.error('Error en el registro:', err);
       }
-      console.error('Error en el registro:', err);
-    }
-  });
+    });
+  }
 }
