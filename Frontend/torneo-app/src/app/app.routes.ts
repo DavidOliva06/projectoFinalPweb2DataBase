@@ -4,6 +4,7 @@ import { Home } from './pages/home/home';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { FixtureList } from './pages/fixture-list/fixture-list';
+import { authGuard } from './services/auth-guard';
 
 export const routes: Routes = [
   // Todas las rutas principales usarán nuestro MainLayoutComponent como base
@@ -17,7 +18,12 @@ export const routes: Routes = [
 
       { path: 'registro', component: Register, title: 'Registro - TorneoPro' },
 
-      { path: 'fixture', component: FixtureList, title: 'Fixture - TorneoPro' },
+      {
+        path: 'fixture',
+        component: FixtureList,
+        title: 'Fixture - TorneoPro',
+        canActivate: [authGuard]
+      },
     ]
   },
   // { path: '**', component: NotFoundComponent }
