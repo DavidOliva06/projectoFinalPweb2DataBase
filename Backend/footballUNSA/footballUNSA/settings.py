@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'footballUNSA.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 DATABASES = {
     'default': dj_database_url.parse(
-        'postgresql://postgres.hldzdpvdasiehkhthyws:Ktxqbn8zA2tJUof1@aws-0-us-east-2.pooler.supabase.com:5432/postgres',
+        'postgresql://postgres.ziuqylurcpgkfhxyxwtp:DQRShNFicji0K3DY@aws-0-sa-east-1.pooler.supabase.com:6543/postgres',
         conn_max_age=600,
         ssl_require=True
     )
