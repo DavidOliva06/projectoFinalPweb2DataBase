@@ -14,8 +14,20 @@ class Team(models.Model):
     def __str__(self):
         return self.name
 
+# tu_app/models.py
+
+from django.db import models
+from .models import Team # Asegúrate de importar Team
+
 class Player(models.Model):
     name = models.CharField(max_length=100)
+    # 👇 NUEVO CAMPO AÑADIDO
+    email = models.EmailField(
+        max_length=254, # Longitud estándar para correos
+        unique=True,    # Buena práctica para evitar duplicados
+        null=True,      # Permite que el campo esté vacío para los jugadores existentes
+        blank=True      # Permite que sea opcional en los formularios de Django Admin
+    )
     age = models.PositiveIntegerField()
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='players')
     registration_date = models.DateField()
