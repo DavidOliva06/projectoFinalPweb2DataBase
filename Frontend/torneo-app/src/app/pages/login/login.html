@@ -1,0 +1,49 @@
+<div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="w-full max-w-md space-y-8 bg-white p-10 rounded-xl shadow-lg">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+        Inicia sesión en tu cuenta
+      </h2>
+    </div>
+    <!-- 1. Vincula el formulario al método onSubmit y usa ngModel para los inputs -->
+    <form class="mt-8 space-y-6" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="rounded-md shadow-sm -space-y-px">
+        <div>
+          <label for="email-address" class="sr-only">Correo electrónico</label>
+          <input id="email-address" name="email" type="email" autocomplete="email" required
+            [(ngModel)]="credentials.email"
+            class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            placeholder="Correo electrónico">
+        </div>
+        <div>
+          <label for="password" class="sr-only">Contraseña</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required
+            [(ngModel)]="credentials.password"
+            class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            placeholder="Contraseña">
+        </div>
+      </div>
+      
+      <!-- 2. Muestra un mensaje de error si existe -->
+      <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <span class="block sm:inline">{{ errorMessage }}</span>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="text-sm">
+          <a routerLink="/registro" class="font-medium text-indigo-600 hover:text-indigo-500">
+            ¿No tienes cuenta? Regístrate
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <!-- 3. Deshabilita el botón mientras se carga -->
+        <button type="submit" [disabled]="isLoading || !loginForm.valid"
+          class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-indigo-400 disabled:cursor-not-allowed">
+          {{ isLoading ? 'Iniciando...' : 'Iniciar Sesión' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
