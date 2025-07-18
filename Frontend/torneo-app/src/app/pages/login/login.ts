@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Auth } from '../../services/auth';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -19,25 +20,27 @@ export class Login {
   };
 
   isLoading = false;
-  errorMessage: string | null = null;
+  // errorMessage: string | null = null;
 
   constructor(
-    private authService: Auth,
-    private router: Router
+    // 4. CORRECCIÓN: El tipo es 'AuthService', el nombre de la variable puede ser 'auth'
+    private auth: Auth, 
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   onSubmit(): void {
     this.isLoading = true;
-    this.errorMessage = null;
 
-    this.authService.login(this.credentials).subscribe({
+    this.auth.login(this.credentials).subscribe({
       next: () => {
-        console.log('Login exitoso!');
+        this.isLoading = false;
+        this.toastr.success('Has iniciado sesión correctamente.', '¡Bienvenido!');
         this.router.navigate(['/fixture']);
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = 'Credenciales inválidas. Por favor, inténtalo de nuevo.';
+        this.toastr.error('El correo o la contraseña son incorrectos.', 'Error de Autenticación');
         console.error('Error en el login:', err);
       }
     });

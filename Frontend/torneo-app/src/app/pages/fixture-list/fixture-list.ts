@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Para usar *ngIf, *ngFor, etc.
 import { Fixture } from '../../services/fixture';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-fixture-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './fixture-list.html',
   styleUrl: './fixture-list.css'
 })

@@ -23,7 +23,7 @@
         
         <!-- Equipo Local -->
         <div class="flex flex-col sm:flex-row items-center justify-end sm:justify-start gap-x-4">
-          <span class="font-semibold text-lg text-gray-700 order-2 sm:order-1">{{ match.team_home.name }}</span>
+            <a [routerLink]="['/equipo', match.team_home.id]" class="font-semibold text-lg text-gray-700 hover:text-indigo-600 hover:underline">{{ match.team_home.name }}</a>
           <!-- Asumimos que tienes un campo 'logo' en tu modelo de Team -->
           <img [src]="match.team_home.logo_url || 'https://via.placeholder.com/40'" alt="Logo {{ match.team_home.name }}" class="w-10 h-10 object-contain order-1 sm:order-2">
         </div>
@@ -40,7 +40,7 @@
         <!-- Equipo Visitante -->
         <div class="flex flex-col sm:flex-row items-center justify-start sm:justify-end gap-x-4">
           <img [src]="match.team_away.logo_url || 'https://via.placeholder.com/40'" alt="Logo {{ match.team_away.name }}" class="w-10 h-10 object-contain">
-          <span class="font-semibold text-lg text-gray-700">{{ match.team_away.name }}</span>
+          <a [routerLink]="['/equipo', match.team_away.id]" class="font-semibold text-lg text-gray-700 hover:text-indigo-600 hover:underline">{{ match.team_away.name }}</a>
         </div>
 
       </div>
