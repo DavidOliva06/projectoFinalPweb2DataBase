@@ -6,6 +6,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { jwtInterceptor } from './services/jwt-interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
+import { API_URL } from './api.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,5 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(withInterceptors([jwtInterceptor])),
     provideToastr(),
+    { provide: API_URL, useValue: 'http://127.0.0.1:8000/api/' }
   ]
 };
