@@ -1,1 +1,55 @@
-<p>fixture-list works!</p>
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-4">
+    Calendario de Partidos
+  </h1>
+
+  <!-- Estado de Carga con Spinner -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-20">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600"></div>
+    </div>
+
+  <!-- Estado de Error -->
+  <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+    <strong class="font-bold">¡Error!</strong>
+    <span class="block sm:inline">{{ errorMessage }}</span>
+  </div>
+
+  <!-- Contenido Principal: Lista de Partidos -->
+  <div *ngIf="!isLoading && !errorMessage" class="space-y-4">
+    
+    <!-- Iteramos sobre cada partido usando *ngFor -->
+    <div *ngFor="let match of fixtures" class="bg-white p-4 rounded-lg shadow-md transition hover:shadow-xl">
+      <div class="grid grid-cols-3 items-center text-center">
+        
+        <!-- Equipo Local -->
+        <div class="flex flex-col sm:flex-row items-center justify-end sm:justify-start gap-x-4">
+          <span class="font-semibold text-lg text-gray-700 order-2 sm:order-1">{{ match.team_home.name }}</span>
+          <!-- Asumimos que tienes un campo 'logo' en tu modelo de Team -->
+          <img [src]="match.team_home.logo_url || 'https://via.placeholder.com/40'" alt="Logo {{ match.team_home.name }}" class="w-10 h-10 object-contain order-1 sm:order-2">
+        </div>
+
+        <!-- Marcador y Fecha -->
+        <div class="px-2">
+          <span class="text-3xl font-bold text-gray-900 tracking-wider">
+            {{ match.score_home }} - {{ match.score_away }}
+          </span>
+          <!-- Usamos el pipe 'date' para formatear la fecha -->
+          <p class="text-sm text-gray-500 mt-1">{{ match.date | date: 'd MMMM, yyyy, h:mm a' }}</p>
+        </div>
+
+        <!-- Equipo Visitante -->
+        <div class="flex flex-col sm:flex-row items-center justify-start sm:justify-end gap-x-4">
+          <img [src]="match.team_away.logo_url || 'https://via.placeholder.com/40'" alt="Logo {{ match.team_away.name }}" class="w-10 h-10 object-contain">
+          <span class="font-semibold text-lg text-gray-700">{{ match.team_away.name }}</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mensaje si no hay partidos -->
+    <div *ngIf="fixtures.length === 0" class="text-center py-10">
+        <p class="text-lg text-gray-500">No hay partidos programados por el momento.</p>
+    </div>
+
+  </div>
+</div>
