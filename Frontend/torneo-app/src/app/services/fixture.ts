@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_URL } from '../api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Fixture {
 
-  private apiUrl = 'http://127.0.0.1:8000/api/';
-
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    @Inject(API_URL) private apiUrl: string 
+  ) { }
 
   getFixtures(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}fixtures/`);
