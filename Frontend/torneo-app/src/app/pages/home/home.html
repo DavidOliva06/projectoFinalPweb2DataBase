@@ -1,1 +1,57 @@
-<p>home works!</p>
+<!-- Archivo: src/app/pages/home/home.html -->
+<!-- ESTADO: CORREGIDO Y ADAPTADO A ANGULAR. -->
+
+<!-- Visor superior (Asumiendo que esta lógica la controla el layout principal o un servicio de autenticación) -->
+<!-- Podríamos añadir un saludo si el usuario está logueado, pero por ahora lo omitimos para mantener el componente simple. -->
+
+<div class="container mx-auto px-4 py-8">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-8 items-center text-center">
+
+    <!-- Columna izquierda (Contador y últimos registros) -->
+    <div class="md:col-span-1 text-left order-2 md:order-1">
+      <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+        <h5 class="font-bold text-gray-700 mb-2">⏳ Tiempo restante de inscripción</h5>
+        <!-- El countdown se actualizará desde el componente de TypeScript -->
+        <div class="text-2xl font-bold text-red-600" id="countdown">{{ countdownDisplay }}</div>
+      </div>
+      <div class="bg-white p-4 rounded-lg shadow-md">
+        <h6 class="font-bold text-gray-700 mb-3">Últimas Inscripciones</h6>
+        <!-- Estado de carga para las inscripciones -->
+        <div *ngIf="isLoadingPlayers" class="text-center py-4">Cargando...</div>
+        <!-- Lista de últimas inscripciones -->
+        <ul *ngIf="!isLoadingPlayers && lastPlayers.length > 0" class="list-none space-y-2">
+          <!-- Usamos *ngFor para iterar sobre los jugadores cargados desde la API -->
+          <li *ngFor="let player of lastPlayers" class="text-sm text-gray-600 border-b pb-1">
+            {{ player.name }} - <span class="text-gray-400">{{ player.registration_date | date:'shortTime' }}</span>
+          </li>
+        </ul>
+        <p *ngIf="!isLoadingPlayers && lastPlayers.length === 0" class="text-sm text-gray-400">
+          Aún no hay jugadores inscritos.
+        </p>
+      </div>
+    </div>
+
+    <!-- Logo central -->
+    <div class="md:col-span-2 order-1 md:order-2">
+      <!-- Cambia 'assets/logo.png' por la ruta real de tu logo en el proyecto Angular -->
+      <img src="assets/images/logo.png" alt="Logo del torneo" class="w-48 mx-auto mb-3">
+      <h3 class="text-2xl font-semibold text-gray-800">Torneo Universitario de Fútbol</h3>
+      <p class="text-gray-500 mt-1">¡Bienvenido al evento deportivo del año!</p>
+    </div>
+
+    <!-- Columna derecha vacía (para uso futuro) -->
+    <div class="hidden md:block md:col-span-1 order-3"></div>
+  </div>
+
+  <!-- Zona de navegación -->
+  <div class="mt-12 text-center border-t pt-8">
+    <!-- Usamos routerLink para la navegación interna de Angular -->
+    <a routerLink="/teams" class="inline-block bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-indigo-700 transition-transform hover:scale-105 mx-2">
+      Ver Equipos
+    </a>
+    <!-- Este botón podría abrir un modal para seleccionar la ronda a descargar -->
+    <a routerLink="/fixture" class="inline-block bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-700 transition-transform hover:scale-105 mx-2">
+      📥 Ver Fixture
+    </a>
+  </div>
+</div>

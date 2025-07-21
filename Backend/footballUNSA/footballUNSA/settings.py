@@ -14,6 +14,7 @@ from pathlib import Path
 import dj_database_url
 import os 
 import environ 
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,7 +31,12 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ['.vercel.app', 'localhost']
+ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
+SIMPLE_JWT = {
+    # Cambia esto a un valor más largo para el desarrollo
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=8), 
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+}
 
 
 # Application definition
@@ -42,13 +48,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'tournament',
+    'rest_framework_simplejwt',
 ]
-
+FRONTEND_URL = os.environ.get('FRONTEND_URL')
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -56,7 +66,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",  # El origen de tu app Angular en desarrollo local
+    "https://tu-frontend-en-vercel.vercel.app", # ¡IMPORTANTE! La URL real de tu frontend desplegado
+]
 ROOT_URLCONF = 'footballUNSA.urls'
 
 TEMPLATES = [
@@ -129,3 +142,27 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# --- CONFIGURACIÓN DE CORREO ELECTRÓNICO ---
+# Reemplaza la configuración de 'console.EmailBackend' con esto:
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True # Para una conexión segura
+# Leemos las credenciales de forma segura desde el archivo .env
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+REST_FRAMEWORK = {
+'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 1. Primero, intentará la autenticación por Token (para tu frontend).
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        
+        # 2. Si la anterior falla, intentará la autenticación por Sesión (para la API Navegable).
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
+AUTHENTICATION_BACKENDS = [
+    'tournament.backends.EmailBackend',  # <-- Nuestro backend personalizado que entiende de emails.
+    'django.contrib.auth.backends.ModelBackend', # <-- El backend por defecto de Django que entiende de usernames.
+]

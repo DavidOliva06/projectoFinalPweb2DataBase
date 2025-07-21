@@ -1,12 +1,40 @@
+<!-- Archivo: src/app/pages/fixture/fixture-list.html -->
+<!-- ESTADO: CORREGIDO Y MEJORADO. -->
+
 <div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-4">
-    Calendario de Partidos
-  </h1>
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b pb-4">
+    <!-- Título de la página -->
+    <h1 class="text-3xl font-bold text-gray-800 mb-4 sm:mb-0">
+      Calendario de Partidos
+    </h1>
+
+    <!-- NUEVO: Controles de Ronda y Descarga de PDF -->
+    <div class="flex items-center gap-x-4">
+      <!-- Selector de Rondas -->
+      <div class="flex-grow">
+        <label for="round-selector" class="sr-only">Seleccionar Ronda</label>
+        <select id="round-selector"
+                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                [(ngModel)]="selectedRound"
+                (change)="onRoundChange()">
+          <option [ngValue]="null" disabled>Selecciona una ronda</option>
+          <!-- CORRECCIÓN: Usaremos un array 'rounds' para generar las opciones dinámicamente -->
+          <option *ngFor="let round of rounds" [value]="round">Ronda {{ round }}</option>
+        </select>
+      </div>
+      <!-- Botón de Descarga de PDF -->
+      <button (click)="downloadFixturePDF()"
+              [disabled]="!selectedRound || isLoading"
+              class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-indigo-300 disabled:cursor-not-allowed transition-colors">
+        Descargar PDF
+      </button>
+    </div>
+  </div>
 
   <!-- Estado de Carga con Spinner -->
-    <div *ngIf="isLoading" class="flex justify-center items-center py-20">
-        <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600"></div>
-    </div>
+  <div *ngIf="isLoading" class="flex justify-center items-center py-20">
+    <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600"></div>
+  </div>
 
   <!-- Estado de Error -->
   <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -15,41 +43,33 @@
   </div>
 
   <!-- Contenido Principal: Lista de Partidos -->
+  <!-- CORRECCIÓN: El nombre del modelo en Django es 'team1' y 'team2'. Lo ajustamos. -->
   <div *ngIf="!isLoading && !errorMessage" class="space-y-4">
-    
-    <!-- Iteramos sobre cada partido usando *ngFor -->
     <div *ngFor="let match of fixtures" class="bg-white p-4 rounded-lg shadow-md transition hover:shadow-xl">
       <div class="grid grid-cols-3 items-center text-center">
-        
         <!-- Equipo Local -->
         <div class="flex flex-col sm:flex-row items-center justify-end sm:justify-start gap-x-4">
-            <a [routerLink]="['/equipo', match.team_home.id]" class="font-semibold text-lg text-gray-700 hover:text-indigo-600 hover:underline">{{ match.team_home.name }}</a>
-          <!-- Asumimos que tienes un campo 'logo' en tu modelo de Team -->
-          <img [src]="match.team_home.logo_url || 'https://via.placeholder.com/40'" alt="Logo {{ match.team_home.name }}" class="w-10 h-10 object-contain order-1 sm:order-2">
+          <a [routerLink]="['/equipo', match.team1.id]" class="font-semibold text-lg text-gray-700 hover:text-indigo-600 hover:underline">{{ match.team1.name }}</a>
+          <img [src]="match.team1.logo_url || 'https://via.placeholder.com/40'" alt="Logo {{ match.team1.name }}" class="w-10 h-10 object-contain order-1 sm:order-2">
         </div>
-
         <!-- Marcador y Fecha -->
         <div class="px-2">
           <span class="text-3xl font-bold text-gray-900 tracking-wider">
-            {{ match.score_home }} - {{ match.score_away }}
+            <!-- Asumiremos que aún no hay marcador -->
+            - vs -
           </span>
-          <!-- Usamos el pipe 'date' para formatear la fecha -->
-          <p class="text-sm text-gray-500 mt-1">{{ match.date | date: 'd MMMM, yyyy, h:mm a' }}</p>
+          <p class="text-sm text-gray-500 mt-1">{{ match.date | date: 'd MMM, yyyy, h:mm a' }}</p>
         </div>
-
         <!-- Equipo Visitante -->
         <div class="flex flex-col sm:flex-row items-center justify-start sm:justify-end gap-x-4">
-          <img [src]="match.team_away.logo_url || 'https://via.placeholder.com/40'" alt="Logo {{ match.team_away.name }}" class="w-10 h-10 object-contain">
-          <a [routerLink]="['/equipo', match.team_away.id]" class="font-semibold text-lg text-gray-700 hover:text-indigo-600 hover:underline">{{ match.team_away.name }}</a>
+          <img [src]="match.team2.logo_url || 'https://via.placeholder.com/40'" alt="Logo {{ match.team2.name }}" class="w-10 h-10 object-contain">
+          <a [routerLink]="['/equipo', match.team2.id]" class="font-semibold text-lg text-gray-700 hover:text-indigo-600 hover:underline">{{ match.team2.name }}</a>
         </div>
-
       </div>
     </div>
-
     <!-- Mensaje si no hay partidos -->
     <div *ngIf="fixtures.length === 0" class="text-center py-10">
-        <p class="text-lg text-gray-500">No hay partidos programados por el momento.</p>
+      <p class="text-lg text-gray-500">Selecciona una ronda para ver los partidos.</p>
     </div>
-
   </div>
 </div>

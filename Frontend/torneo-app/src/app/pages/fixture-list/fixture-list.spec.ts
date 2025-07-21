@@ -1,18 +1,26 @@
+// Archivo: src/app/pages/fixture/fixture-list.spec.ts
+// ESTADO: CORREGIDO Y ESTANDARIZADO.
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FixtureList } from './fixture-list';
+// <-- CORRECCIÓN: Importar la clase con el nombre nuevo: 'FixtureListComponent'.
+import { FixtureListComponent } from './fixture-list';
 
-describe('FixtureList', () => {
-  let component: FixtureList;
-  let fixture: ComponentFixture<FixtureList>;
+// <-- CORRECCIÓN: Apuntar a la nueva clase.
+describe('FixtureListComponent', () => {
+  // <-- CORRECCIÓN: Actualizar los tipos.
+  let component: FixtureListComponent;
+  let fixture: ComponentFixture<FixtureListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FixtureList]
+      // <-- CORRECCIÓN: Importar la nueva clase.
+      imports: [FixtureListComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FixtureList);
+    // <-- CORRECCIÓN: Crear el componente con la nueva clase.
+    fixture = TestBed.createComponent(FixtureListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

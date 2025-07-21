@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Faculty, Team, Player, Fixture
+from django.contrib.auth.models import User
+
 
 class FacultySerializer(serializers.ModelSerializer):
     class Meta:
@@ -7,9 +9,14 @@ class FacultySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TeamSerializer(serializers.ModelSerializer):
+    # Le decimos que el campo 'faculty' debe ser renderizado usando el FacultySerializer.
+    # 'read_only=True' significa que no se usará para escribir datos, solo para mostrarlos.
+    faculty = FacultySerializer(read_only=True)
+
     class Meta:
         model = Team
-        fields = '__all__'
+        # Incluimos 'faculty' en la lista de campos.
+        fields = ['id', 'name', 'faculty']
 
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,3 +27,28 @@ class FixtureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fixture
         fields = '__all__'
+class UserRegisterSerializer(serializers.ModelSerializer):
+    # El password se define como de solo escritura, lo cual es correcto.
+    password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+
+    class Meta:
+        model = User
+        # <-- CORRECCIÓN: Quitamos 'username' de la lista principal de campos editables.
+        fields = ('password', 'email', 'first_name')
+        
+        # Le decimos al serializer que 'username' es un campo que solo se leerá,
+        # no se esperará como entrada.
+        read_only_fields = ('username',)
+
+    def create(self, validated_data):
+        # Ahora el método 'create' funciona como se esperaba.
+        # 'validated_data' ya no contiene 'username', así que no hay conflicto.
+        user = User.objects.create_user(
+            # Asignamos el email al username, que es un requisito de Django.
+            username=validated_data['email'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+            first_name=validated_data.get('first_name', ''),
+            is_active=False # El usuario se crea inactivo, lo cual es correcto.
+        )
+        return user

@@ -3,10 +3,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/app",
-    "types": [
-      "node"
-    ]
+    "outDir": "./out-tsc/app"
+    // --- LÍNEA ELIMINADA ---
+    // Al eliminar la propiedad 'types', TypeScript volverá a su comportamiento
+    // por defecto, que es incluir todos los tipos globales disponibles,
+    // incluyendo los de 'zone.js' que necesita Angular.
   },
   "include": [
     "src/**/*.ts"

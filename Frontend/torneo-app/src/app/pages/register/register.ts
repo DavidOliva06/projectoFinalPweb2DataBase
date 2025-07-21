@@ -1,8 +1,11 @@
+// Archivo: src/app/pages/register/register.ts
+// ESTADO: CORREGIDO Y ESTANDARIZADO.
+
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Auth } from '../../services/auth';
+import { AuthService } from '../../services/auth.service'; // <-- CORRECCIÓN: Nombre de clase estandarizado.
 
 @Component({
   selector: 'app-register',
@@ -11,7 +14,8 @@ import { Auth } from '../../services/auth';
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
-export class Register { 
+// <-- CORRECCIÓN: Se renombra la clase a 'RegisterComponent'.
+export class RegisterComponent { 
 
   userData = {
     name: '',
@@ -24,7 +28,7 @@ export class Register {
   errorMessage: string | null = null;
 
   constructor(
-    private auth: Auth,
+    private authService: AuthService, // <-- CORRECCIÓN: Inyección con nombre estandarizado.
     private router: Router
   ) {}
 
@@ -33,17 +37,18 @@ export class Register {
     this.errorMessage = null;
     this.successMessage = null;
 
-    this.auth.register(this.userData).subscribe({
-      next: () => {
+    this.authService.register(this.userData).subscribe({
+      next: (response) => {
         this.isLoading = false;
-        this.successMessage = '¡Registro exitoso! Serás redirigido al login...';
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 3000);
+        // El mensaje que usas es muy bueno para la UX.
+        this.successMessage = '¡Registro exitoso! Revisa tu correo para activar tu cuenta.';
+        // Opcional: podrías resetear el formulario aquí.
+        // this.userData = { name: '', email: '', password: '' };
       },
       error: (err: any) => {
         this.isLoading = false;
-        if (err.error && err.error.email && Array.isArray(err.error.email)) {
+        // Tu lógica para manejar errores específicos de Django es excelente. La mantenemos.
+        if (err.error?.email && Array.isArray(err.error.email)) {
           this.errorMessage = `Error: ${err.error.email[0]}`;
         } else if (err.error && typeof err.error === 'string') {
           this.errorMessage = err.error;

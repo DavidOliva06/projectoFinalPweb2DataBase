@@ -1,32 +1,62 @@
-import { Routes } from '@angular/router';
-import { MainLayout } from './layouts/main-layout/main-layout';
-import { Home } from './pages/home/home';
-import { Login } from './pages/login/login';
-import { Register } from './pages/register/register';
-import { FixtureList } from './pages/fixture-list/fixture-list';
-import { authGuard } from './services/auth-guard';
-import { TeamDetail } from './pages/team-detail/team-detail';
+// Archivo: src/app/app.routes.ts
+// ESTADO: FINAL Y CORREGIDO.
 
+import { Routes } from '@angular/router';
+
+// --- Importaciones de Componentes y Guardias ---
+
+// 1. Layout Principal
+import { MainLayoutComponent } from './layouts/main-layout/main-layout';
+
+// 2. Páginas Públicas
+import { HomeComponent } from './pages/home/home';
+import { LoginComponent } from './pages/login/login';
+import { RegisterComponent } from './pages/register/register';
+
+// 3. Páginas Protegidas (Requieren Login)
+import { FixtureListComponent } from './pages/fixture-list/fixture-list';
+import { TeamsComponent } from './pages/teams/teams'; // <-- CORRECCIÓN: Usamos el nuevo componente unificado.
+
+// 4. Guardia de Autenticación
+import { authGuard } from './guards/auth.guard';
+
+/**
+ * Define las rutas principales de la aplicación.
+ * Todas las rutas están anidadas dentro del MainLayoutComponent para mantener
+ * una cabecera y pie de página consistentes.
+ */
 export const routes: Routes = [
-  // Todas las rutas principales usarán nuestro MainLayoutComponent como base
   {
     path: '',
-    component: MainLayout,
+    component: MainLayoutComponent,
     children: [
-      { path: '', component: Home, title: 'Inicio - TorneoPro' },
-
-      { path: 'login', component: Login, title: 'Iniciar Sesión - TorneoPro' },
-
-      { path: 'registro', component: Register, title: 'Registro - TorneoPro' },
-
-      {
-        path: 'fixture',
-        component: FixtureList,
-        title: 'Fixture - TorneoPro',
-        canActivate: [authGuard]
+      // --- Rutas Públicas ---
+      { path: '', component: HomeComponent }, // Ruta raíz (página de inicio)
+      { path: 'login', component: LoginComponent },
+      { path: 'registro', component: RegisterComponent },
+      
+      // --- Rutas Protegidas ---
+      // Solo accesibles si el authGuard devuelve 'true'.
+      { 
+        path: 'fixture', 
+        component: FixtureListComponent, 
+        canActivate: [authGuard] 
       },
-      { path: 'equipo/:id', component: TeamDetail, title: 'Detalle de Equipo', canActivate: [authGuard] },
+      { 
+        path: 'teams', // <-- CORRECCIÓN: Ruta simplificada para la página de equipos.
+        component: TeamsComponent, 
+        canActivate: [authGuard] 
+      },
+
+      // --- RUTA ELIMINADA ---
+      // Ya no necesitamos una ruta separada para el detalle del equipo,
+      // porque el componente 'TeamsComponent' ahora maneja tanto la lista como el detalle.
+      // { path: 'equipo/:id', component: TeamDetailComponent, canActivate: [authGuard] },
     ]
   },
-  // { path: '**', component: NotFoundComponent }
+
+  // --- Ruta Wildcard ---
+  // Redirige cualquier URL no encontrada a la página de inicio.
+  // Debe ser siempre la última ruta de la lista.
+  { path: '**', redirectTo: '' }
 ];
