@@ -11,10 +11,8 @@
       "prefix": "app",
       "architect": {
         "build": {
-
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-
             "outputPath": "dist/torneo-app",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -23,10 +21,9 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/favicon.ico",
+              "src/assets",
+              "src/_redirects" 
             ],
             "styles": [
               "src/styles.css",
@@ -54,7 +51,6 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
-              
             }
           },
           "defaultConfiguration": "production"
@@ -79,15 +75,14 @@
           "options": {
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/favicon.ico",
+              "src/assets",
+              "src/_redirects"
             ],
             "styles": [
               "src/styles.css"
             ],
-            "polyfills": [ 
+            "polyfills": [
               "src/polyfills.ts"
             ]
           }
