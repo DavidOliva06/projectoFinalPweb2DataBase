@@ -11,18 +11,28 @@
       <div class="flex items-center space-x-4">
         <a routerLink="/" class="text-gray-600 hover:text-indigo-600">Inicio</a>
         <a routerLink="/fixture" class="text-gray-600 hover:text-indigo-600">Fixture</a>
-        
-        <div class="pl-4 border-l border-gray-200 space-x-2">
-            <!-- SECCIÓN DINÁMICA: Mostrar si el usuario NO está autenticado -->
+        <a routerLink="/teams" class="text-gray-600 hover:text-indigo-600">Equipos</a>
+
+        <div class="pl-4 border-l border-gray-200 flex items-center space-x-2">
+            <!-- SECCIÓN PARA USUARIOS NO AUTENTICADOS -->
             <ng-container *ngIf="!isAuthenticated">
               <a routerLink="/login" class="px-4 py-2 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors">Iniciar Sesión</a>
               <a routerLink="/registro" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors">Registrarse</a>
             </ng-container>
 
-            <!-- SECCIÓN DINÁMICA: Mostrar si el usuario SÍ está autenticado -->
+            <!-- SECCIÓN PARA USUARIOS AUTENTICADOS -->
             <ng-container *ngIf="isAuthenticated">
-              <!-- Podríamos añadir un enlace a un futuro perfil aquí -->
-              <!-- <a routerLink="/perfil" class="text-gray-600 hover:text-indigo-600">Mi Perfil</a> -->
+              <!-- --- ¡NUEVO ENLACE AÑADIDO! --- -->
+              <!-- Este enlace lleva al formulario de registro de jugador. -->
+              <a routerLink="/registrar-jugador" 
+                 class="flex items-center gap-x-2 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 transition-colors">
+                <!-- Ícono opcional para hacerlo más visual -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                Inscribir Jugador
+              </a>
+              
               <button (click)="logout()" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors">
                 Cerrar Sesión
               </button>

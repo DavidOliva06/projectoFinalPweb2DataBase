@@ -16,7 +16,7 @@ import { RegisterComponent } from './pages/register/register';
 // 3. Páginas Protegidas (Requieren Login)
 import { FixtureListComponent } from './pages/fixture-list/fixture-list';
 import { TeamsComponent } from './pages/teams/teams'; // <-- CORRECCIÓN: Usamos el nuevo componente unificado.
-
+import { PlayerRegistrationComponent } from './pages/player-registration/player-registration';
 // 4. Guardia de Autenticación
 import { authGuard } from './guards/auth.guard';
 
@@ -47,11 +47,10 @@ export const routes: Routes = [
         component: TeamsComponent, 
         canActivate: [authGuard] 
       },
+      { 
+        path: 'registrar-jugador', component: PlayerRegistrationComponent, canActivate: [authGuard]
+       },
 
-      // --- RUTA ELIMINADA ---
-      // Ya no necesitamos una ruta separada para el detalle del equipo,
-      // porque el componente 'TeamsComponent' ahora maneja tanto la lista como el detalle.
-      // { path: 'equipo/:id', component: TeamDetailComponent, canActivate: [authGuard] },
     ]
   },
 

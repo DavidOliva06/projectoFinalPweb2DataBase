@@ -7,21 +7,24 @@ class FacultySerializer(serializers.ModelSerializer):
     class Meta:
         model = Faculty
         fields = '__all__'
+class PlayerSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+    team_info = serializers.ReadOnlyField(source='team.name') # Opcional: solo para mostrar
+    
+    class Meta:
+        model = Player
+        fields = ['id', 'name', 'age', 'email', 'registration_date', 'user', 'team_info']
 
 class TeamSerializer(serializers.ModelSerializer):
     # Le decimos que el campo 'faculty' debe ser renderizado usando el FacultySerializer.
     # 'read_only=True' significa que no se usará para escribir datos, solo para mostrarlos.
     faculty = FacultySerializer(read_only=True)
+    players = PlayerSerializer(many=True, read_only=True)
 
     class Meta:
         model = Team
-        # Incluimos 'faculty' en la lista de campos.
-        fields = ['id', 'name', 'faculty']
-
-class PlayerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Player
-        fields = '__all__'
+        # --- ¡AÑADE 'players' A LA LISTA DE CAMPOS! ---
+        fields = ['id', 'name', 'faculty', 'players']
 
 class FixtureSerializer(serializers.ModelSerializer):
     class Meta:

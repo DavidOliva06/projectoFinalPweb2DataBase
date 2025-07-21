@@ -29,6 +29,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.exceptions import ValidationError
 
 # --- Third-Party Library Imports (ReportLab) ---
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
@@ -174,9 +175,37 @@ class TeamViewSet(viewsets.ModelViewSet):
         )
 
 class PlayerViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint para jugadores.
+    - CUALQUIER usuario autenticado puede CREAR un jugador.
+    - SOLO los administradores pueden ver la lista, actualizar o borrar.
+    """
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
-    permission_classes = [IsAdminUser]
+
+    def get_permissions(self):
+        # --- CORRECCIÓN ---
+        # Permitimos 'list' para cualquier usuario autenticado,
+        # para que el HomeComponent pueda cargar los últimos registros.
+        if self.action in ['create', 'list']:
+            permission_classes = [IsAuthenticated]
+        else:
+            # retrieve, update, destroy siguen siendo solo para admins.
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
+    def perform_create(self, serializer):
+        """
+        Se ejecuta antes de guardar un nuevo jugador.
+        Aquí aplicamos nuestra regla de negocio.
+        """
+        # Comprueba si el usuario que hace la petición ya tiene un jugador.
+        if Player.objects.filter(user=self.request.user).exists():
+            # Si ya existe, lanza un error de validación claro.
+            raise ValidationError('Ya tienes un jugador registrado. No puedes registrar otro.')
+        
+        # Si no existe, guarda el nuevo jugador, asociándolo con el usuario actual.
+        serializer.save(user=self.request.user)
 
 # --------------------------------------------------------------------------
 # VISTA DEL LISTADO DE FIXTURES (JSON)

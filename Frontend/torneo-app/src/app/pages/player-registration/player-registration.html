@@ -1,0 +1,50 @@
+<!-- src/app/pages/player-registration/player-registration.html -->
+<div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="w-full max-w-lg space-y-8 bg-white p-10 rounded-xl shadow-lg">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+        Registra a tu Jugador
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Solo puedes registrar un jugador por cuenta.
+      </p>
+    </div>
+    <form class="mt-8 space-y-6" (ngSubmit)="onSubmit()" #playerForm="ngForm">
+      <!-- Nombre -->
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Nombre Completo del Jugador</label>
+        <input id="name" name="name" type="text" required [(ngModel)]="playerData.name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+      </div>
+      <!-- Edad -->
+      <div>
+        <label for="age" class="block text-sm font-medium text-gray-700">Edad</label>
+        <input id="age" name="age" type="number" required [(ngModel)]="playerData.age" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+      </div>
+      <!-- Email (Opcional) -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico (Opcional)</label>
+        <input id="email" name="email" type="email" [(ngModel)]="playerData.email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+      </div>
+      <!-- Selector de Equipo -->
+      <div>
+        <label for="team" class="block text-sm font-medium text-gray-700">Selecciona tu Equipo</label>
+        <select id="team" name="team_id" required [(ngModel)]="playerData.team_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+          <option [ngValue]="null" disabled>-- Elige un equipo --</option>
+          <option *ngFor="let team of teams" [value]="team.id">{{ team.name }}</option>
+        </select>
+      </div>
+
+      <!-- Mensajes de Error -->
+      <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Botón de Envío -->
+      <div>
+        <button type="submit" [disabled]="isLoading || !playerForm.valid" class="group relative flex w-full justify-center rounded-md border ...">
+          {{ isLoading ? 'Registrando...' : 'Registrar Jugador' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.conf import settings
 class Faculty(models.Model):
     name = models.CharField(max_length=100)
 
@@ -14,16 +14,21 @@ class Team(models.Model):
         return self.name
 
 class Player(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(
-        max_length=254, 
-        unique=True,    
-        null=True,      
-        blank=True      
+    # --- CORRECCIÓN: Hacemos el campo opcional a nivel de base de datos ---
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='player_profile',
+        null=True,  
+        blank=True  
     )
+
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=254, unique=True, null=True, blank=True)
     age = models.PositiveIntegerField()
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='players')
-    registration_date = models.DateField()
+    # auto_now_add=True es mejor para que la fecha se establezca en el momento de la creación.
+    registration_date = models.DateField(auto_now_add=True) 
 
     def __str__(self):
         return f"{self.name} ({self.team.name})"
