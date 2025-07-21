@@ -2,9 +2,9 @@
 
 import os
 from pathlib import Path
-from decouple import config  # Usaremos decouple para una gestión más limpia de las variables.
+from decouple import Csv, config  # Usaremos decouple para una gestión más limpia de las variables.
 from datetime import timedelta
-
+import dj_database_url
 # ==============================================================================
 # CONFIGURACIÓN BÁSICA DEL PROYECTO
 # ==============================================================================
@@ -135,7 +135,11 @@ WSGI_APPLICATION = 'footballUNSA.wsgi.application'
 
 # `dj-database-url` ya no es necesario, `decouple` puede parsear la URL directamente.
 DATABASES = {
-    'default': config('DATABASE_URL', cast=db_url) # Suponiendo que has importado db_url de decouple.db_url
+    'default': dj_database_url.parse(
+        config('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 # Si prefieres seguir con dj_database_url:
 # DATABASES = {
