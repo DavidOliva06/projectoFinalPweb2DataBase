@@ -1,7 +1,8 @@
+// Este archivo se usa cuando ejecutas 'ng serve'.
+
 export const environment = {
-  production: true,
-  // ¡CAMBIO CLAVE!
-  // Reemplaza esto con la URL real de tu backend desplegado en Vercel.
-  apiUrl: 'https://inscripcionunsa.vercel.app/api' 
+  production: false,
+  // <-- CORRECCIÓN: Añade esta línea.
+  apiUrl: 'http://127.0.0.1:8000/api'
 };
 

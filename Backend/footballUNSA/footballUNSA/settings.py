@@ -2,7 +2,7 @@
 
 import os
 from pathlib import Path
-from decouple import Csv, config  # Usaremos decouple para una gestión más limpia de las variables.
+from decouple import config  # Usaremos decouple para una gestión más limpia de las variables.
 from datetime import timedelta
 import dj_database_url
 # ==============================================================================
@@ -28,7 +28,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # CONFIGURACIÓN DE RED Y SEGURIDAD
 # ==============================================================================
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.vercel.app']
 
 # Vercel provee la URL de despliegue en la variable 'VERCEL_URL'.
 # La añadimos a ALLOWED_HOSTS automáticamente si estamos en Vercel.
