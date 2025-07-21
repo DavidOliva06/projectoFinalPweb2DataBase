@@ -1,6 +1,7 @@
 export const environment = {
-  production: false,
-  // <-- CORRECCIÓN: Añade esta línea.
-  apiUrl: 'http://127.0.0.1:8000/api'
+  production: true,
+  // ¡CAMBIO CLAVE!
+  // Reemplaza esto con la URL real de tu backend desplegado en Vercel.
+  apiUrl: 'https://inscripcionunsa.vercel.app/api' 
 };
 
