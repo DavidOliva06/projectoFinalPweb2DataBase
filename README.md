@@ -56,7 +56,7 @@ Sigue estos pasos para correr el proyecto en un entorno de desarrollo local.
 
 ### 1. Configuración del Backend
 # 1. Clona el repositorio
-git clone https://github.com/tu-usuario/tu-repositorio.git
+git clone https://github.com/DavidOliva06/projectoFinalPweb2DataBase.git
 cd tu-repositorio/Backend
 
 # 2. Crea y activa un entorno virtual
