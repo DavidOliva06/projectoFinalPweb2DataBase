@@ -64,15 +64,15 @@ python -m venv venv
 # Windows:
 venv\Scripts\activate
 # macOS/Linux:
-# source venv/bin/activate
+source venv/bin/activate
 
 # 3. Instala las dependencias
 pip install -r requirements.txt
 
 # 4. Configura tus variables de entorno
-#    - Crea un archivo .env en la raíz del Backend
-#    - Añade tus credenciales de base de datos, SECRET_KEY, etc.
-#      (ver .env.example para la estructura)
+  - Crea un archivo .env en la raíz del Backend
+   - Añade tus credenciales de base de datos, SECRET_KEY, etc.
+    (ver .env.example para la estructura)
 
 # 5. Aplica las migraciones
 python manage.py migrate
@@ -90,7 +90,7 @@ cd ../Frontend/torneo-app
 npm install
 
 # 3. Configura la URL de la API
-#    - Abre src/app/api.config.ts y asegúrate de que la URL apunte a tu servidor local.
+  - Abre src/app/api.config.ts y asegúrate de que la URL apunte a tu servidor local.
 
 # 4. Inicia el servidor de desarrollo
 ng serve -o
