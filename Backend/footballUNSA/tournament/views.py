@@ -143,7 +143,7 @@ class TeamViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
 
-    @action(detail=False, methods=['post'], permission_classes=[IsAdminUser])
+    @action(detail=False, methods=['post', 'get'], permission_classes=[IsAdminUser])
     def generate_fixture(self, request):
         """
         Acción para generar y guardar el fixture completo del torneo.
