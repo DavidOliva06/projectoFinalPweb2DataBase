@@ -22,7 +22,7 @@ export class FixtureListComponent implements OnInit {
   errorMessage: string | null = null;
 
   // NUEVO: Propiedades para manejar rondas y el selector
-  rounds: number[] = Array.from({length: 10}, (_, i) => i + 1); // Genera un array de 1 a 10 para las rondas
+  rounds: number[] = Array.from({length: 15}, (_, i) => i + 1); // Genera un array de 1 a 10 para las rondas
   selectedRound: number | null = null;
 
   // <-- CORRECCIÓN: Inyectar el servicio con el nombre de clase estandarizado.
