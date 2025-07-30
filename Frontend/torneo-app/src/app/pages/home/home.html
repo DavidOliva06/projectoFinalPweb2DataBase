@@ -22,7 +22,7 @@
         <ul *ngIf="!isLoadingPlayers && lastPlayers.length > 0" class="list-none space-y-2">
           <!-- Usamos *ngFor para iterar sobre los jugadores cargados desde la API -->
           <li *ngFor="let player of lastPlayers" class="text-sm text-gray-600 border-b pb-1">
-            {{ player.name }} - <span class="text-gray-400">{{ user.registration_date | date:'shortDate' }}</span>
+            {{ player.name }} - <span class="text-gray-400">{{ player.registration_date | date:'shortDate' }}</span>
           </li>
         </ul>
         <p *ngIf="!isLoadingPlayers && lastPlayers.length === 0" class="text-sm text-gray-400">
